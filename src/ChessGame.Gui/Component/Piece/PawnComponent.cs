@@ -1,12 +1,12 @@
 ﻿namespace ChessGame.Gui.Component.Piece {
+    using ChessGamer.Services;
     using System;
     using System.Reactive.Subjects;
     public partial class PawnComponent : UserControl {
-        public Color Color { get; set; }        
+        public Color Color { get; set; }
         public Subject<EventArgs> Subject { get; set; }
-
         public PawnComponent() {
-            InitializeComponent();            
+            InitializeComponent();
             Subject = new Subject<EventArgs>();
         }
 
@@ -23,6 +23,6 @@
 
         private void PawnComponent_Click(object sender, EventArgs e) {
             Subject.OnNext(e);
-        }        
+        }
     }
 }

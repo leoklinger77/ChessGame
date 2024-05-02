@@ -2,15 +2,16 @@
     using ChessGamer.Pieces;
 
     public class Field {
-        public int Column { get; private set; }
-        public int Line { get; private set; }
+        public PiecePosition Position { get; set; }
         public Piece Piece { get; private set; }
         public bool ValidPosition { get; private set; }
         public bool FieldAttacked { get; private set; }
 
-        public Field(int line, int column, Piece piece = null) {
-            Line = line;
-            Column = column;
+        public int Row => Position.Row;
+        public int Column => Position.Column;
+
+        public Field(PiecePosition position, Piece piece = null) {
+            Position = position;
             Piece = piece;
         }
         public void EnableFieldAttacked() {
@@ -22,11 +23,11 @@
         }
 
         public void DisableFieldAttacked() {
-            FieldAttacked = false;            
+            FieldAttacked = false;
         }
 
         public void DisableValidPosition() {
-            ValidPosition = false;            
+            ValidPosition = false;
         }
 
         internal void SetPiece(Piece piece) {
@@ -49,11 +50,15 @@
         }
 
         public override string ToString() {
+            var srt = string.Empty;
             if (Piece == null) {
-                return " _ ";
+                srt = " _ ";
             } else {
-                return Piece.ToString();
+                srt = Piece.ToString();
             }
+            srt += $" Attacked: {FieldAttacked} |  Validation: {ValidPosition} | PieceColor: {Piece.Color}";
+            
+            return srt;
         }
     }
 }

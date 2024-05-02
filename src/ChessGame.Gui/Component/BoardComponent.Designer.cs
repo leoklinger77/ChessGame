@@ -26,6 +26,38 @@ namespace ChessGame.Gui.Component {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BoardComponent));
+            System.Reactive.Subjects.Subject<EventArgs> subject_11 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_12 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_13 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_14 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_15 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_16 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_17 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_18 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_19 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_110 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_111 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_112 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_113 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_114 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_115 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_116 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_117 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_118 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_119 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_120 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_121 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_122 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_123 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_124 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_125 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_126 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_127 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_128 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_129 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_130 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_131 = new System.Reactive.Subjects.Subject<EventArgs>();
+            System.Reactive.Subjects.Subject<EventArgs> subject_132 = new System.Reactive.Subjects.Subject<EventArgs>();
             panelLeft = new TableLayoutPanel();
             label16 = new Label();
             label15 = new Label();
@@ -49,10 +81,8 @@ namespace ChessGame.Gui.Component {
             pawnB2 = new PawnComponent();
             pawnC2 = new PawnComponent();
             pawnD2 = new PawnComponent();
-            pawnE2 = new PawnComponent();
             pawnF2 = new PawnComponent();
             pawnG2 = new PawnComponent();
-            pawnH2 = new PawnComponent();
             pawnH7 = new PawnComponent();
             pawnG7 = new PawnComponent();
             pawnF7 = new PawnComponent();
@@ -77,6 +107,8 @@ namespace ChessGame.Gui.Component {
             towerA1 = new TowerComponent();
             damaD8 = new DamaComponent();
             damaD1 = new DamaComponent();
+            pawnH2 = new PawnComponent();
+            pawnE2 = new PawnComponent();
             panelLeft.SuspendLayout();
             panelLow.SuspendLayout();
             panelChess.SuspendLayout();
@@ -344,7 +376,6 @@ namespace ChessGame.Gui.Component {
             panelChess.Controls.Add(pawnB2, 1, 6);
             panelChess.Controls.Add(pawnC2, 2, 6);
             panelChess.Controls.Add(pawnD2, 3, 6);
-            panelChess.Controls.Add(pawnE2, 4, 6);
             panelChess.Controls.Add(pawnF2, 5, 6);
             panelChess.Controls.Add(pawnG2, 6, 6);
             panelChess.Controls.Add(pawnH7, 7, 1);
@@ -372,6 +403,7 @@ namespace ChessGame.Gui.Component {
             panelChess.Controls.Add(damaD8, 3, 0);
             panelChess.Controls.Add(damaD1, 3, 7);
             panelChess.Controls.Add(pawnH2, 7, 6);
+            panelChess.Controls.Add(pawnE2, 4, 6);
             panelChess.Location = new Point(34, 1);
             panelChess.Name = "panelChess";
             panelChess.RowCount = 8;
@@ -386,7 +418,7 @@ namespace ChessGame.Gui.Component {
             panelChess.Size = new Size(841, 727);
             panelChess.TabIndex = 7;
             panelChess.CellPaint += chessBoard_CellPaint;
-            panelChess.Click += panelChess_Click;
+            panelChess.MouseClick += panelChess_Click;
             // 
             // pawnA2
             // 
@@ -397,6 +429,7 @@ namespace ChessGame.Gui.Component {
             pawnA2.Location = new Point(3, 543);
             pawnA2.Name = "pawnA2";
             pawnA2.Size = new Size(99, 84);
+            pawnA2.Subject = subject_11;
             pawnA2.TabIndex = 2;
             // 
             // pawnB2
@@ -408,6 +441,7 @@ namespace ChessGame.Gui.Component {
             pawnB2.Location = new Point(108, 543);
             pawnB2.Name = "pawnB2";
             pawnB2.Size = new Size(99, 84);
+            pawnB2.Subject = subject_12;
             pawnB2.TabIndex = 3;
             // 
             // pawnC2
@@ -419,6 +453,7 @@ namespace ChessGame.Gui.Component {
             pawnC2.Location = new Point(213, 543);
             pawnC2.Name = "pawnC2";
             pawnC2.Size = new Size(99, 84);
+            pawnC2.Subject = subject_13;
             pawnC2.TabIndex = 4;
             // 
             // pawnD2
@@ -430,18 +465,8 @@ namespace ChessGame.Gui.Component {
             pawnD2.Location = new Point(318, 543);
             pawnD2.Name = "pawnD2";
             pawnD2.Size = new Size(99, 84);
+            pawnD2.Subject = subject_14;
             pawnD2.TabIndex = 5;
-            // 
-            // pawnE2
-            // 
-            pawnE2.BackColor = Color.Transparent;
-            pawnE2.BackgroundImage = (Image)resources.GetObject("pawnE2.BackgroundImage");
-            pawnE2.BackgroundImageLayout = ImageLayout.Stretch;
-            pawnE2.Color = Color.Empty;
-            pawnE2.Location = new Point(423, 543);
-            pawnE2.Name = "pawnE2";
-            pawnE2.Size = new Size(99, 84);
-            pawnE2.TabIndex = 6;
             // 
             // pawnF2
             // 
@@ -452,6 +477,7 @@ namespace ChessGame.Gui.Component {
             pawnF2.Location = new Point(528, 543);
             pawnF2.Name = "pawnF2";
             pawnF2.Size = new Size(99, 84);
+            pawnF2.Subject = subject_15;
             pawnF2.TabIndex = 7;
             // 
             // pawnG2
@@ -463,18 +489,8 @@ namespace ChessGame.Gui.Component {
             pawnG2.Location = new Point(633, 543);
             pawnG2.Name = "pawnG2";
             pawnG2.Size = new Size(99, 84);
+            pawnG2.Subject = subject_16;
             pawnG2.TabIndex = 8;
-            // 
-            // pawnH2
-            // 
-            pawnH2.BackColor = Color.Transparent;
-            pawnH2.BackgroundImage = (Image)resources.GetObject("pawnH2.BackgroundImage");
-            pawnH2.BackgroundImageLayout = ImageLayout.Stretch;
-            pawnH2.Color = Color.Empty;
-            pawnH2.Location = new Point(738, 543);
-            pawnH2.Name = "pawnH2";
-            pawnH2.Size = new Size(100, 84);
-            pawnH2.TabIndex = 9;
             // 
             // pawnH7
             // 
@@ -485,6 +501,7 @@ namespace ChessGame.Gui.Component {
             pawnH7.Location = new Point(738, 93);
             pawnH7.Name = "pawnH7";
             pawnH7.Size = new Size(100, 84);
+            pawnH7.Subject = subject_17;
             pawnH7.TabIndex = 10;
             // 
             // pawnG7
@@ -496,6 +513,7 @@ namespace ChessGame.Gui.Component {
             pawnG7.Location = new Point(633, 93);
             pawnG7.Name = "pawnG7";
             pawnG7.Size = new Size(99, 84);
+            pawnG7.Subject = subject_18;
             pawnG7.TabIndex = 11;
             // 
             // pawnF7
@@ -507,6 +525,7 @@ namespace ChessGame.Gui.Component {
             pawnF7.Location = new Point(528, 93);
             pawnF7.Name = "pawnF7";
             pawnF7.Size = new Size(99, 84);
+            pawnF7.Subject = subject_19;
             pawnF7.TabIndex = 12;
             // 
             // pawnE7
@@ -518,6 +537,7 @@ namespace ChessGame.Gui.Component {
             pawnE7.Location = new Point(423, 93);
             pawnE7.Name = "pawnE7";
             pawnE7.Size = new Size(99, 84);
+            pawnE7.Subject = subject_110;
             pawnE7.TabIndex = 13;
             // 
             // pawnD7
@@ -529,6 +549,7 @@ namespace ChessGame.Gui.Component {
             pawnD7.Location = new Point(318, 93);
             pawnD7.Name = "pawnD7";
             pawnD7.Size = new Size(99, 84);
+            pawnD7.Subject = subject_111;
             pawnD7.TabIndex = 14;
             // 
             // pawnB7
@@ -540,6 +561,7 @@ namespace ChessGame.Gui.Component {
             pawnB7.Location = new Point(108, 93);
             pawnB7.Name = "pawnB7";
             pawnB7.Size = new Size(99, 84);
+            pawnB7.Subject = subject_112;
             pawnB7.TabIndex = 15;
             // 
             // pawnC7
@@ -551,6 +573,7 @@ namespace ChessGame.Gui.Component {
             pawnC7.Location = new Point(213, 93);
             pawnC7.Name = "pawnC7";
             pawnC7.Size = new Size(99, 84);
+            pawnC7.Subject = subject_113;
             pawnC7.TabIndex = 16;
             // 
             // pawnA7
@@ -562,6 +585,7 @@ namespace ChessGame.Gui.Component {
             pawnA7.Location = new Point(3, 93);
             pawnA7.Name = "pawnA7";
             pawnA7.Size = new Size(99, 84);
+            pawnA7.Subject = subject_114;
             pawnA7.TabIndex = 17;
             // 
             // kingE8
@@ -572,6 +596,7 @@ namespace ChessGame.Gui.Component {
             kingE8.Location = new Point(423, 3);
             kingE8.Name = "kingE8";
             kingE8.Size = new Size(99, 84);
+            kingE8.Subject = subject_115;
             kingE8.TabIndex = 18;
             // 
             // kingE1
@@ -582,6 +607,7 @@ namespace ChessGame.Gui.Component {
             kingE1.Location = new Point(423, 633);
             kingE1.Name = "kingE1";
             kingE1.Size = new Size(99, 91);
+            kingE1.Subject = subject_116;
             kingE1.TabIndex = 19;
             // 
             // bishopF1
@@ -592,6 +618,7 @@ namespace ChessGame.Gui.Component {
             bishopF1.Location = new Point(528, 633);
             bishopF1.Name = "bishopF1";
             bishopF1.Size = new Size(99, 91);
+            bishopF1.Subject = subject_117;
             bishopF1.TabIndex = 20;
             // 
             // bishopC1
@@ -602,6 +629,7 @@ namespace ChessGame.Gui.Component {
             bishopC1.Location = new Point(213, 633);
             bishopC1.Name = "bishopC1";
             bishopC1.Size = new Size(99, 91);
+            bishopC1.Subject = subject_118;
             bishopC1.TabIndex = 21;
             // 
             // bishopF8
@@ -612,6 +640,7 @@ namespace ChessGame.Gui.Component {
             bishopF8.Location = new Point(528, 3);
             bishopF8.Name = "bishopF8";
             bishopF8.Size = new Size(99, 84);
+            bishopF8.Subject = subject_119;
             bishopF8.TabIndex = 22;
             // 
             // bishopC8
@@ -622,6 +651,7 @@ namespace ChessGame.Gui.Component {
             bishopC8.Location = new Point(213, 3);
             bishopC8.Name = "bishopC8";
             bishopC8.Size = new Size(99, 84);
+            bishopC8.Subject = subject_120;
             bishopC8.TabIndex = 23;
             // 
             // horseG8
@@ -632,6 +662,7 @@ namespace ChessGame.Gui.Component {
             horseG8.Location = new Point(633, 3);
             horseG8.Name = "horseG8";
             horseG8.Size = new Size(99, 84);
+            horseG8.Subject = subject_121;
             horseG8.TabIndex = 24;
             // 
             // horseB8
@@ -642,6 +673,7 @@ namespace ChessGame.Gui.Component {
             horseB8.Location = new Point(108, 3);
             horseB8.Name = "horseB8";
             horseB8.Size = new Size(99, 84);
+            horseB8.Subject = subject_122;
             horseB8.TabIndex = 25;
             // 
             // horseG1
@@ -652,6 +684,7 @@ namespace ChessGame.Gui.Component {
             horseG1.Location = new Point(633, 633);
             horseG1.Name = "horseG1";
             horseG1.Size = new Size(99, 91);
+            horseG1.Subject = subject_123;
             horseG1.TabIndex = 26;
             // 
             // horseB1
@@ -662,6 +695,7 @@ namespace ChessGame.Gui.Component {
             horseB1.Location = new Point(108, 633);
             horseB1.Name = "horseB1";
             horseB1.Size = new Size(99, 91);
+            horseB1.Subject = subject_124;
             horseB1.TabIndex = 27;
             // 
             // towerH8
@@ -672,6 +706,7 @@ namespace ChessGame.Gui.Component {
             towerH8.Location = new Point(738, 3);
             towerH8.Name = "towerH8";
             towerH8.Size = new Size(100, 84);
+            towerH8.Subject = subject_125;
             towerH8.TabIndex = 28;
             // 
             // towerA8
@@ -682,6 +717,7 @@ namespace ChessGame.Gui.Component {
             towerA8.Location = new Point(3, 3);
             towerA8.Name = "towerA8";
             towerA8.Size = new Size(99, 84);
+            towerA8.Subject = subject_126;
             towerA8.TabIndex = 29;
             // 
             // towerH1
@@ -692,6 +728,7 @@ namespace ChessGame.Gui.Component {
             towerH1.Location = new Point(738, 633);
             towerH1.Name = "towerH1";
             towerH1.Size = new Size(100, 91);
+            towerH1.Subject = subject_127;
             towerH1.TabIndex = 30;
             // 
             // towerA1
@@ -702,6 +739,7 @@ namespace ChessGame.Gui.Component {
             towerA1.Location = new Point(3, 633);
             towerA1.Name = "towerA1";
             towerA1.Size = new Size(99, 91);
+            towerA1.Subject = subject_128;
             towerA1.TabIndex = 31;
             // 
             // damaD8
@@ -712,6 +750,7 @@ namespace ChessGame.Gui.Component {
             damaD8.Location = new Point(318, 3);
             damaD8.Name = "damaD8";
             damaD8.Size = new Size(99, 84);
+            damaD8.Subject = subject_129;
             damaD8.TabIndex = 32;
             // 
             // damaD1
@@ -722,7 +761,32 @@ namespace ChessGame.Gui.Component {
             damaD1.Location = new Point(318, 633);
             damaD1.Name = "damaD1";
             damaD1.Size = new Size(99, 91);
+            damaD1.Subject = subject_130;
             damaD1.TabIndex = 33;
+            // 
+            // pawnH2
+            // 
+            pawnH2.BackColor = Color.Transparent;
+            pawnH2.BackgroundImage = (Image)resources.GetObject("pawnH2.BackgroundImage");
+            pawnH2.BackgroundImageLayout = ImageLayout.Stretch;
+            pawnH2.Color = Color.Empty;
+            pawnH2.Location = new Point(738, 543);
+            pawnH2.Name = "pawnH2";
+            pawnH2.Size = new Size(100, 84);
+            pawnH2.Subject = subject_131;
+            pawnH2.TabIndex = 9;
+            // 
+            // pawnE2
+            // 
+            pawnE2.BackColor = Color.Transparent;
+            pawnE2.BackgroundImage = (Image)resources.GetObject("pawnE2.BackgroundImage");
+            pawnE2.BackgroundImageLayout = ImageLayout.Stretch;
+            pawnE2.Color = Color.Empty;
+            pawnE2.Location = new Point(423, 543);
+            pawnE2.Name = "pawnE2";
+            pawnE2.Size = new Size(99, 84);
+            pawnE2.Subject = subject_132;
+            pawnE2.TabIndex = 6;
             // 
             // BoardComponent
             // 
