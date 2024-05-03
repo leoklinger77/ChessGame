@@ -11,9 +11,11 @@
         private IObservable<PiecePosition> ObservableEventClient;
         private SynchronizationContext _synchronizationContext;
         private Board Board { get; set; }
+        private readonly CapturedPartsComponent _capturedWhiteComponent;
+        private readonly CapturedPartsComponent _capturedBlackComponent;
 
         private IDictionary<string, Tuple<PiecePosition, Field>> _validPosition;
-        public BoardComponent(Board board) {
+        public BoardComponent(Board board, CapturedPartsComponent capturedWhiteComponent, CapturedPartsComponent capturedBlackComponent) {
             InitializeComponent();
             _synchronizationContext = SynchronizationContext.Current;
             EventPiecePosition = new Subject<PiecePosition>();
@@ -25,9 +27,100 @@
             this.BackColor = Color.Beige;
             PlacingThePieces();
             Board = board;
+            _capturedWhiteComponent = capturedWhiteComponent;
+            _capturedBlackComponent = capturedBlackComponent;
         }
 
-        public void PlacingThePieces() {
+        
+
+        private void chessBoard_CellPaint(object sender, TableLayoutCellPaintEventArgs e) {
+
+            if ((e.Column + e.Row) % 2 == 1) {
+                e.Graphics.FillRectangle(Brushes.Tan, e.CellBounds);
+            } else {
+                e.Graphics.FillRectangle(Brushes.Beige, e.CellBounds);
+            }
+
+            var key = new PiecePosition(e.Column, e.Row);
+            if (_validPosition.TryGetValue(GetKey(key), out _)) {
+                e.Graphics.FillRectangle(Brushes.GreenYellow, e.CellBounds);
+            }
+        }
+
+        private void panelChess_Click(object sender, EventArgs e) {
+            TableLayoutPanel tableLayoutPanel = sender as TableLayoutPanel;
+
+            Point relativePoint = tableLayoutPanel.PointToClient(Cursor.Position);
+
+            int cellWidth = tableLayoutPanel.Width / tableLayoutPanel.ColumnCount;
+            int cellHeight = tableLayoutPanel.Height / tableLayoutPanel.RowCount;
+
+            int column = relativePoint.X / cellWidth;
+            int row = relativePoint.Y / cellHeight;
+
+            EventPiecePosition.OnNext(new PiecePosition(column, row));
+        }
+
+        private UserControl GetUserControlAtPosition(int row, int column) {
+            foreach (Control control in panelChess.Controls) {
+                var tablePanelPossion = panelChess.GetCellPosition(control);
+                if (tablePanelPossion.Row == row && tablePanelPossion.Column == column) {
+                    return control as UserControl;
+                }
+            }
+            return null;
+        }
+
+        private void PossibleMoves(PiecePosition clickPosition) {
+
+            if (_validPosition.TryGetValue(GetKey(clickPosition), out var positionValid)) {
+                if (Board.TryMove(positionValid.Item2, clickPosition, out var ransom1)) {
+
+                    _validPosition.Clear();
+                    panelChess.Invalidate();
+
+                    var pieceComponent = GetUserControlAtPosition(positionValid.Item2.Row, positionValid.Item2.Column);
+                    var capture = GetUserControlAtPosition(clickPosition.Row, clickPosition.Column);
+                    if (capture != null) {
+                        panelChess.Controls.Remove(capture);
+
+                        if (Board.IsWhite) {
+                            _capturedBlackComponent.IncrementCount(capture);
+                        } else {
+                            _capturedWhiteComponent.IncrementCount(capture);
+                        }
+                    }
+                    panelChess.Controls.Remove(pieceComponent);
+                    if (!positionValid.Item2.FieldAttacked) {
+                        panelChess.SetCellPosition(pieceComponent, new TableLayoutPanelCellPosition(clickPosition.Column, clickPosition.Row));
+                        panelChess.Controls.Add(pieceComponent);
+                    }
+                    return;
+                }
+            }
+
+            if (!Board.TryGetField(clickPosition, out var field, out var ransom)) {
+                return;
+            }
+
+            _validPosition.Clear();
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    var fieldMark = Board.Fields()[i, j];
+                    if (fieldMark.ValidPosition) {
+                        var position = new PiecePosition(fieldMark.Column, fieldMark.Row);
+                        var tuple = new Tuple<PiecePosition, Field>(position, field);
+                        _validPosition.Add(GetKey(position), tuple);
+                    }
+                }
+            }
+            panelChess.Invalidate();
+        }
+
+        private string GetKey(PiecePosition position) {
+            return position.ToString();
+        }
+        private void PlacingThePieces() {
             //White
             pawnA2.SetInitializePiece(Color.White);
             pawnA2.Subject.Subscribe((e) => {
@@ -159,88 +252,6 @@
             kingE8.Subject.Subscribe((e) => {
                 panelChess_Click(panelChess, e);
             });
-        }
-
-        private void chessBoard_CellPaint(object sender, TableLayoutCellPaintEventArgs e) {
-
-            if ((e.Column + e.Row) % 2 == 1) {
-                e.Graphics.FillRectangle(Brushes.Tan, e.CellBounds);
-            } else {
-                e.Graphics.FillRectangle(Brushes.Beige, e.CellBounds);
-            }
-
-            var key = new PiecePosition(e.Column, e.Row);
-            if (_validPosition.TryGetValue(GetKey(key), out _)) {
-                e.Graphics.FillRectangle(Brushes.GreenYellow, e.CellBounds);
-            }
-        }
-
-        private void panelChess_Click(object sender, EventArgs e) {
-            TableLayoutPanel tableLayoutPanel = sender as TableLayoutPanel;
-
-            Point relativePoint = tableLayoutPanel.PointToClient(Cursor.Position);
-
-            int cellWidth = tableLayoutPanel.Width / tableLayoutPanel.ColumnCount;
-            int cellHeight = tableLayoutPanel.Height / tableLayoutPanel.RowCount;
-
-            int column = relativePoint.X / cellWidth;
-            int row = relativePoint.Y / cellHeight;
-
-            EventPiecePosition.OnNext(new PiecePosition(column, row));
-        }
-
-        private UserControl GetUserControlAtPosition(int row, int column) {
-            foreach (Control control in panelChess.Controls) {
-                var tablePanelPossion = panelChess.GetCellPosition(control);
-                if (tablePanelPossion.Row == row && tablePanelPossion.Column == column) {
-                    return control as UserControl;
-                }
-            }
-            return null;
-        }
-
-        private void PossibleMoves(PiecePosition clickPosition) {
-
-            if (_validPosition.TryGetValue(GetKey(clickPosition), out var positionValid)) {
-                if (Board.TryMove(positionValid.Item2, clickPosition, out var ransom1)) {
-
-                    _validPosition.Clear();
-                    panelChess.Invalidate();
-
-                    var pieceComponent = GetUserControlAtPosition(positionValid.Item2.Row, positionValid.Item2.Column);
-                    var capture = GetUserControlAtPosition(clickPosition.Row, clickPosition.Column);
-                    if (capture != null) {
-                        panelChess.Controls.Remove(capture);
-                    }
-                    panelChess.Controls.Remove(pieceComponent);
-                    if (!positionValid.Item2.FieldAttacked) {
-                        panelChess.SetCellPosition(pieceComponent, new TableLayoutPanelCellPosition(clickPosition.Column, clickPosition.Row));
-                        panelChess.Controls.Add(pieceComponent);
-                    }
-                    return;
-                }
-            }
-
-            if (!Board.TryGetField(clickPosition, out var field, out var ransom)) {
-                return;
-            }
-
-            _validPosition.Clear();
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    var fieldMark = Board.Fields()[i, j];
-                    if (fieldMark.ValidPosition) {
-                        var position = new PiecePosition(fieldMark.Column, fieldMark.Row);
-                        var tuple = new Tuple<PiecePosition, Field>(position, field);
-                        _validPosition.Add(GetKey(position), tuple);
-                    }
-                }
-            }
-            panelChess.Invalidate();
-        }
-
-        private string GetKey(PiecePosition position) {
-            return position.ToString();
         }
     }
 }

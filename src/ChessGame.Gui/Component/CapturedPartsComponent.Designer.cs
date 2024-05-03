@@ -23,21 +23,16 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CapturedPartsComponent));
-            System.Reactive.Subjects.Subject<EventArgs> subject_16 = new System.Reactive.Subjects.Subject<EventArgs>();
-            System.Reactive.Subjects.Subject<EventArgs> subject_17 = new System.Reactive.Subjects.Subject<EventArgs>();
-            System.Reactive.Subjects.Subject<EventArgs> subject_18 = new System.Reactive.Subjects.Subject<EventArgs>();
-            System.Reactive.Subjects.Subject<EventArgs> subject_19 = new System.Reactive.Subjects.Subject<EventArgs>();
-            System.Reactive.Subjects.Subject<EventArgs> subject_110 = new System.Reactive.Subjects.Subject<EventArgs>();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
             tableLayoutPanel3 = new TableLayoutPanel();
-            damaComponent1 = new Piece.DamaComponent();
-            towerComponent1 = new Piece.TowerComponent();
-            bishopComponent1 = new Piece.BishopComponent();
+            panel_Tower = new Panel();
+            panel_Dama = new Panel();
+            panel_King = new Panel();
             tableLayoutPanel4 = new TableLayoutPanel();
-            horseComponent1 = new Piece.HorseComponent();
-            pawnComponent1 = new Piece.PawnComponent();
+            panel_Pawn = new Panel();
+            panel_Horse = new Panel();
+            panel_Bishop = new Panel();
             tableLayoutPanel5 = new TableLayoutPanel();
             panel_SelectPiece = new Panel();
             panel2 = new Panel();
@@ -88,9 +83,9 @@
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel3.Controls.Add(damaComponent1, 0, 0);
-            tableLayoutPanel3.Controls.Add(towerComponent1, 1, 0);
-            tableLayoutPanel3.Controls.Add(bishopComponent1, 2, 0);
+            tableLayoutPanel3.Controls.Add(panel_Tower, 2, 0);
+            tableLayoutPanel3.Controls.Add(panel_Dama, 1, 0);
+            tableLayoutPanel3.Controls.Add(panel_King, 0, 0);
             tableLayoutPanel3.Dock = DockStyle.Fill;
             tableLayoutPanel3.Location = new Point(3, 3);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -99,38 +94,29 @@
             tableLayoutPanel3.Size = new Size(319, 64);
             tableLayoutPanel3.TabIndex = 0;
             // 
-            // damaComponent1
+            // panel_Tower
             // 
-            damaComponent1.BackColor = Color.Transparent;
-            damaComponent1.BackgroundImage = (Image)resources.GetObject("damaComponent1.BackgroundImage");
-            damaComponent1.BackgroundImageLayout = ImageLayout.Stretch;
-            damaComponent1.Location = new Point(3, 3);
-            damaComponent1.Name = "damaComponent1";
-            damaComponent1.Size = new Size(73, 58);
-            damaComponent1.Subject = subject_16;
-            damaComponent1.TabIndex = 0;
+            panel_Tower.Dock = DockStyle.Fill;
+            panel_Tower.Location = new Point(215, 3);
+            panel_Tower.Name = "panel_Tower";
+            panel_Tower.Size = new Size(101, 58);
+            panel_Tower.TabIndex = 2;
             // 
-            // towerComponent1
+            // panel_Dama
             // 
-            towerComponent1.BackColor = Color.Transparent;
-            towerComponent1.BackgroundImage = (Image)resources.GetObject("towerComponent1.BackgroundImage");
-            towerComponent1.BackgroundImageLayout = ImageLayout.Stretch;
-            towerComponent1.Location = new Point(109, 3);
-            towerComponent1.Name = "towerComponent1";
-            towerComponent1.Size = new Size(73, 58);
-            towerComponent1.Subject = subject_17;
-            towerComponent1.TabIndex = 1;
+            panel_Dama.Dock = DockStyle.Fill;
+            panel_Dama.Location = new Point(109, 3);
+            panel_Dama.Name = "panel_Dama";
+            panel_Dama.Size = new Size(100, 58);
+            panel_Dama.TabIndex = 1;
             // 
-            // bishopComponent1
+            // panel_King
             // 
-            bishopComponent1.BackColor = Color.Transparent;
-            bishopComponent1.BackgroundImage = (Image)resources.GetObject("bishopComponent1.BackgroundImage");
-            bishopComponent1.BackgroundImageLayout = ImageLayout.Stretch;
-            bishopComponent1.Location = new Point(215, 3);
-            bishopComponent1.Name = "bishopComponent1";
-            bishopComponent1.Size = new Size(73, 58);
-            bishopComponent1.Subject = subject_18;
-            bishopComponent1.TabIndex = 2;
+            panel_King.Dock = DockStyle.Fill;
+            panel_King.Location = new Point(3, 3);
+            panel_King.Name = "panel_King";
+            panel_King.Size = new Size(100, 58);
+            panel_King.TabIndex = 0;
             // 
             // tableLayoutPanel4
             // 
@@ -139,8 +125,9 @@
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel4.Controls.Add(horseComponent1, 0, 0);
-            tableLayoutPanel4.Controls.Add(pawnComponent1, 1, 0);
+            tableLayoutPanel4.Controls.Add(panel_Pawn, 0, 0);
+            tableLayoutPanel4.Controls.Add(panel_Horse, 0, 0);
+            tableLayoutPanel4.Controls.Add(panel_Bishop, 0, 0);
             tableLayoutPanel4.Dock = DockStyle.Fill;
             tableLayoutPanel4.Location = new Point(3, 73);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -149,28 +136,29 @@
             tableLayoutPanel4.Size = new Size(319, 64);
             tableLayoutPanel4.TabIndex = 1;
             // 
-            // horseComponent1
+            // panel_Pawn
             // 
-            horseComponent1.BackColor = Color.Transparent;
-            horseComponent1.BackgroundImage = (Image)resources.GetObject("horseComponent1.BackgroundImage");
-            horseComponent1.BackgroundImageLayout = ImageLayout.Stretch;
-            horseComponent1.Location = new Point(3, 3);
-            horseComponent1.Name = "horseComponent1";
-            horseComponent1.Size = new Size(73, 58);
-            horseComponent1.Subject = subject_19;
-            horseComponent1.TabIndex = 3;
+            panel_Pawn.Dock = DockStyle.Fill;
+            panel_Pawn.Location = new Point(215, 3);
+            panel_Pawn.Name = "panel_Pawn";
+            panel_Pawn.Size = new Size(101, 58);
+            panel_Pawn.TabIndex = 3;
             // 
-            // pawnComponent1
+            // panel_Horse
             // 
-            pawnComponent1.BackColor = Color.Transparent;
-            pawnComponent1.BackgroundImage = (Image)resources.GetObject("pawnComponent1.BackgroundImage");
-            pawnComponent1.BackgroundImageLayout = ImageLayout.Stretch;
-            pawnComponent1.Color = Color.Empty;
-            pawnComponent1.Location = new Point(109, 3);
-            pawnComponent1.Name = "pawnComponent1";
-            pawnComponent1.Size = new Size(73, 58);
-            pawnComponent1.Subject = subject_110;
-            pawnComponent1.TabIndex = 4;
+            panel_Horse.Dock = DockStyle.Fill;
+            panel_Horse.Location = new Point(109, 3);
+            panel_Horse.Name = "panel_Horse";
+            panel_Horse.Size = new Size(100, 58);
+            panel_Horse.TabIndex = 2;
+            // 
+            // panel_Bishop
+            // 
+            panel_Bishop.Dock = DockStyle.Fill;
+            panel_Bishop.Location = new Point(3, 3);
+            panel_Bishop.Name = "panel_Bishop";
+            panel_Bishop.Size = new Size(100, 58);
+            panel_Bishop.TabIndex = 1;
             // 
             // tableLayoutPanel5
             // 
@@ -206,13 +194,14 @@
             // 
             // lbl_NameComponent
             // 
-            lbl_NameComponent.AutoSize = true;
-            lbl_NameComponent.Font = new Font("Segoe UI", 36F, FontStyle.Regular, GraphicsUnit.Point);
-            lbl_NameComponent.Location = new Point(2, 12);
+            lbl_NameComponent.Dock = DockStyle.Fill;
+            lbl_NameComponent.Font = new Font("Segoe UI", 39.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_NameComponent.Location = new Point(0, 0);
             lbl_NameComponent.Name = "lbl_NameComponent";
-            lbl_NameComponent.Size = new Size(201, 65);
+            lbl_NameComponent.Size = new Size(206, 86);
             lbl_NameComponent.TabIndex = 0;
-            lbl_NameComponent.Text = "Level 20";
+            lbl_NameComponent.Text = "You";
+            lbl_NameComponent.TextAlign = ContentAlignment.MiddleRight;
             // 
             // CapturedPartsComponent
             // 
@@ -227,7 +216,6 @@
             tableLayoutPanel4.ResumeLayout(false);
             tableLayoutPanel5.ResumeLayout(false);
             panel2.ResumeLayout(false);
-            panel2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -236,15 +224,16 @@
         private TableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel2;
         private TableLayoutPanel tableLayoutPanel3;
-        private Piece.DamaComponent damaComponent1;
-        private Piece.TowerComponent towerComponent1;
-        private Piece.BishopComponent bishopComponent1;
-        private Piece.HorseComponent horseComponent1;
-        private Piece.PawnComponent pawnComponent1;
         private TableLayoutPanel tableLayoutPanel4;
         private TableLayoutPanel tableLayoutPanel5;
         private Panel panel_SelectPiece;
         private Panel panel2;
         private Label lbl_NameComponent;
+        private Panel panel_Tower;
+        private Panel panel_Dama;
+        private Panel panel_King;
+        private Panel panel_Pawn;
+        private Panel panel_Horse;
+        private Panel panel_Bishop;
     }
 }
