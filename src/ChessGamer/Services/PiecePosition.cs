@@ -2,7 +2,7 @@
     public class PiecePosition {
         public int Column { get; private set; }
         public int Row { get; private set; }
-        public PiecePosition(int column, int row) {
+        public PiecePosition(int row, int column) {
             Column = column;
             Row = row;
         }
@@ -10,8 +10,12 @@
             return $"Column: {Column} | Row: {Row}";
         }
 
-        public static PiecePosition Position(int column, int row) {
-            return new PiecePosition(column, row);
+        public static PiecePosition Position(int row, int column) {
+            return new PiecePosition(row, column);
+        }
+
+        public string GetKey() {
+            return this.ToString();
         }
     }
 }

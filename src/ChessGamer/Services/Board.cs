@@ -1,31 +1,11 @@
 ﻿namespace ChessGamer.Services {
     using ChessGamer.Pieces;
+    using ChessGamer.Tools;
     using System;
     using System.Data.Common;
     using System.Security.Cryptography;
 
     public class Board {
-        private IDictionary<char, int> _columnToNum = new Dictionary<char, int>() {
-            { 'A', 0 },
-            { 'B', 1 },
-            { 'C', 2 },
-            { 'D', 3 },
-            { 'E', 4 },
-            { 'F', 5 },
-            { 'G', 6 },
-            { 'H', 7 },
-        };
-
-        private IDictionary<char, int> _rowToNum = new Dictionary<char, int>() {
-            { '1', 7 },
-            { '2', 6 },
-            { '3', 5 },
-            { '4', 4 },
-            { '5', 3 },
-            { '6', 2 },
-            { '7', 1 },
-            { '8', 0 },
-        };
 
         private IDictionary<ConsoleColor, List<Piece>> _captureFields = new Dictionary<ConsoleColor, List<Piece>>();
 
@@ -42,10 +22,10 @@
         public Field[,] Fields() => _fields;
         public IDictionary<ConsoleColor, List<Piece>> CaptureFields() => _captureFields;
 
-        public bool TryGetField(PiecePosition point, out Field field, out string ransom) {
+        public bool TryGetField(PiecePosition select, out Field field, out string ransom) {
             ransom = string.Empty;
 
-            field = _fields[point.Row, point.Column];
+            field = _fields[select.Row, select.Column];
             if (field == null && field.Piece == null) {
                 ransom = $"There is no piece in the selected field";
                 return false;
@@ -57,7 +37,7 @@
 
             ClearFiltAttacked(ref _fields);
 
-            field.Piece.ValidFilds(point.Row, point.Column, ref _fields);
+            field.Piece.ValidFilds(select.Row, select.Column, ref _fields);
 
             field.Piece.FieldAttacked(field.Row, field.Column, ref _fields);
 
@@ -66,7 +46,6 @@
 
         private void ClearFiltAttacked(ref Field[,] board) {
             for (int i = 0; i < 8; i++) {
-
                 for (int j = 0; j < 8; j++) {
                     var field = board[i, j];
                     if (field.ValidPosition) {
@@ -88,7 +67,7 @@
                 return false;
             }
 
-            field = _fields[line, column];
+            field = _fields[column, line];
             if (field == null && field.Piece == null) {
                 ransom = $"There is no piece in the {position} selected field";
                 return false;
@@ -121,13 +100,14 @@
             }
 
             var from = _fields[toPosition.Row, toPosition.Column];
-            if (fromFiel.Piece.ValidFilds(fromFiel.Row, fromFiel.Column, ref _fields)) {
+            if (from.ValidPosition) {
+
                 fromFiel.Piece.FieldAttacked(fromFiel.Row, fromFiel.Column, ref _fields);
                 if (!_fields[toPosition.Row, toPosition.Column].ValidPosition) {
                     ransom = "Invalid Move";
                     return false;
                 }
-            }
+            }            
 
             if (!MoveToFrom(fromFiel, ref from, ref ransom)) {
                 return false;
@@ -161,10 +141,10 @@
                 return false;
             }
 
-            var from = _fields[line, column];
+            var from = _fields[column, line];
             if (old.Piece.ValidFilds(old.Row, old.Column, ref _fields)) {
                 old.Piece.FieldAttacked(old.Row, old.Column, ref _fields);
-                if (!_fields[line, column].ValidPosition) {
+                if (!_fields[column, line].ValidPosition) {
                     ransom = "Invalid Move";
                     return false;
                 }
@@ -181,6 +161,21 @@
             }
             Count++;
             return true;
+        }
+
+        public IDictionary<string, SelectPosition> GetValidFilds(Field origin) {
+            var result = new Dictionary<string, SelectPosition>();
+            for (int row = 0; row < 8; row++) {
+                for (int collumn = 0; collumn < 8; collumn++) {
+                    var fieldMark = _fields[row, collumn];
+                    if (fieldMark.ValidPosition) {
+
+                        var bla = new SelectPosition(origin, fieldMark);
+                        result.Add(bla.GetDestinationKey(), bla);
+                    }
+                }
+            }
+            return result;
         }
 
         private bool MoveToFrom(Field oldField, ref Field fromPosition, ref string ransom) {
@@ -217,15 +212,15 @@
             }
         }
 
-        private bool TryGetColumnRowByPosition(string position, out int column, out int line, ref string ransom) {
+        public bool TryGetColumnRowByPosition(string position, out int column, out int line, ref string ransom) {
             var old = position.ToArray();
             column = 0;
             line = 0;
-            if (!_columnToNum.TryGetValue(old[0], out column)) {
+            if (!Assistant._columnTextToNum.TryGetValue(old[0], out column)) {
                 ransom = "Invalid column selected";
                 return false;
             }
-            if (!_rowToNum.TryGetValue(old[1], out line)) {
+            if (!Assistant._rowTextToNum.TryGetValue(old[1], out line)) {
                 ransom = "Invalid line selected";
                 return false;
             }
@@ -254,34 +249,50 @@
         }
 
         private void CreatedBoard() {
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (i == 1) {
-                        _fields[i, j] = new Field(PiecePosition.Position(j, i), new Pawn(ColorBlack));
-                    } else if (i == 6) {
-                        _fields[i, j] = new Field(PiecePosition.Position(j, i), new Pawn(ColorWhite));
+            for (int row = 0; row < 8; row++) {
+                for (int column = 0; column < 8; column++) {
+
+                    if (row == 0 || row == 7) {
+                        var collor = row == 0 ? ColorBlack : ColorWhite;
+                        switch (column) {
+                            case 0:
+                                _fields[row, column] = new Field(PiecePosition.Position(row, column), new Tower(collor));
+                                break;
+                            case 1:
+                                _fields[row, column] = new Field(PiecePosition.Position(row, column), new Horse(collor));
+                                break;
+                            case 2:
+                                _fields[row, column] = new Field(PiecePosition.Position(row, column), new Bishop(collor));
+                                break;
+                            case 3:
+                                _fields[row, column] = new Field(PiecePosition.Position(row, column), new Dama(collor));
+                                break;
+                            case 4:
+                                _fields[row, column] = new Field(PiecePosition.Position(row, column), new King(collor));
+                                break;
+                            case 5:
+                                _fields[row, column] = new Field(PiecePosition.Position(row, column), new Bishop(collor));
+                                break;
+                            case 6:
+                                _fields[row, column] = new Field(PiecePosition.Position(row, column), new Horse(collor));
+                                break;
+                            case 7:
+                                _fields[row, column] = new Field(PiecePosition.Position(row, column), new Tower(collor));
+                                break;
+                        }
+                    } else if (row == 1) {
+
+                        _fields[row, column] = new Field(PiecePosition.Position(row, column), new Pawn(ColorBlack));
+
+                    } else if (row == 6) {
+
+                        _fields[row, column] = new Field(PiecePosition.Position(row, column), new Pawn(ColorWhite));
+
                     } else {
-                        _fields[i, j] = new Field(PiecePosition.Position(j, i));
+                        _fields[row, column] = new Field(PiecePosition.Position(row, column));
                     }
                 }
             }
-            _fields[0, 0] = new Field(PiecePosition.Position(0, 0), new Tower(ColorBlack));
-            _fields[0, 1] = new Field(PiecePosition.Position(0, 1), new Horse(ColorBlack));
-            _fields[0, 2] = new Field(PiecePosition.Position(0, 2), new Bishop(ColorBlack));
-            _fields[0, 3] = new Field(PiecePosition.Position(0, 3), new Dama(ColorBlack));
-            _fields[0, 4] = new Field(PiecePosition.Position(0, 4), new King(ColorBlack));
-            _fields[0, 5] = new Field(PiecePosition.Position(0, 5), new Bishop(ColorBlack));
-            _fields[0, 6] = new Field(PiecePosition.Position(0, 6), new Horse(ColorBlack));
-            _fields[0, 7] = new Field(PiecePosition.Position(0, 7), new Tower(ColorBlack));
-
-            _fields[7, 0] = new Field(PiecePosition.Position(7, 0), new Tower(ColorWhite));
-            _fields[7, 1] = new Field(PiecePosition.Position(7, 1), new Horse(ColorWhite));
-            _fields[7, 2] = new Field(PiecePosition.Position(7, 2), new Bishop(ColorWhite));
-            _fields[7, 3] = new Field(PiecePosition.Position(7, 3), new Dama(ColorWhite));
-            _fields[7, 4] = new Field(PiecePosition.Position(7, 4), new King(ColorWhite));
-            _fields[7, 5] = new Field(PiecePosition.Position(7, 5), new Bishop(ColorWhite));
-            _fields[7, 6] = new Field(PiecePosition.Position(7, 6), new Horse(ColorWhite));
-            _fields[7, 7] = new Field(PiecePosition.Position(7, 7), new Tower(ColorWhite));
         }
         private void ClearMarkedFields() {
             for (int i = 0; i < 8; i++) {

@@ -19,6 +19,7 @@
             _count--;
             CountUpdate();
         }
+
         private void CountUpdate() {
             lbl_Count.Text = _count.ToString();
         }

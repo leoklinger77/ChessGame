@@ -56,7 +56,7 @@
             } else {
                 srt = Piece.ToString();
             }
-            srt += $" Attacked: {FieldAttacked} |  Validation: {ValidPosition} | PieceColor: {Piece.Color}";
+            //srt += $" Attacked: {FieldAttacked} |  Validation: {ValidPosition} | PieceColor: {Piece?.Color}";
             
             return srt;
         }

@@ -7,8 +7,8 @@
             Color = color;
         }
 
-        internal abstract bool FieldAttacked(int line, int column, ref Field[,] fields);
+        internal abstract bool FieldAttacked(int row, int column, ref Field[,] fields);
 
-        internal abstract bool ValidFilds(int line, int column, ref Field[,] fields);
+        internal abstract bool ValidFilds(int row, int column, ref Field[,] fields);
     }
 }
