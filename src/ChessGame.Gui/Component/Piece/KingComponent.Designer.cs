@@ -1,5 +1,5 @@
 ﻿namespace ChessGame.Gui.Component.Piece {
-    partial class KingComponenet {
+    partial class KingComponent {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -23,7 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KingComponenet));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KingComponent));
             SuspendLayout();
             // 
             // KingComponenet

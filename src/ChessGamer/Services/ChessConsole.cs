@@ -116,7 +116,7 @@
         }
 
         private void Write(Field field) {
-            if (field.ValidPosition || field.FieldAttacked) {
+            if (field.ValidPosition) {
                 Console.BackgroundColor = ConsoleColor.DarkGray;
             }
 

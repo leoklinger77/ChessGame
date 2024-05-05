@@ -1,14 +1,12 @@
 ﻿namespace ChessGame.Gui.Component.Piece {
     using System.Reactive.Subjects;
 
-    public partial class DamaComponent : UserControl {
-        public Color Color { get; private set; }
-        public Subject<EventArgs> Subject { get; set; }
+    public partial class DamaComponent : FieldComponent {        
         public DamaComponent() {
             InitializeComponent();
-            Subject = new Subject<EventArgs>();
+            
         }
-        public void SetInitializePiece(Color color) {
+        public override void SetInitializePiece(Color color) {
             Color = color;
             if (Color == Color.White) {
                 Image myimage = new Bitmap(@"C:\develop\custom\ChessGame\Piece\DamaWhite.png");

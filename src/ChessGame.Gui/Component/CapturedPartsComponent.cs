@@ -18,7 +18,7 @@
         private readonly CapturedCountComponent _countHorseComponent;
         private readonly CapturedCountComponent _countPawnComponent;
 
-        private readonly KingComponenet _kingComponenet;
+        private readonly KingComponent _kingComponenet;
         private readonly DamaComponent _damaComponenet;
         private readonly TowerComponent _towerComponenet;
         private readonly BishopComponent _bishopComponenet;
@@ -37,7 +37,7 @@
 
             _nameComponent = nameComponent;
 
-            _kingComponenet = new KingComponenet();
+            _kingComponenet = new KingComponent();
             _damaComponenet = new DamaComponent();
             _towerComponenet = new TowerComponent();
             _bishopComponenet = new BishopComponent();
@@ -51,7 +51,7 @@
             _countHorseComponent = new CapturedCountComponent(_horseComponenet);
             _countPawnComponent = new CapturedCountComponent(_pawnComponenet);
 
-            _control.Add(typeof(KingComponenet), _countkingComponent);
+            _control.Add(typeof(KingComponent), _countkingComponent);
             _control.Add(typeof(DamaComponent), _CountDamaComponent);
             _control.Add(typeof(TowerComponent), _countTowerComponent);
             _control.Add(typeof(BishopComponent), _countBishopComponent);

@@ -39,8 +39,6 @@
 
             field.Piece.ValidFilds(select.Row, select.Column, ref _fields);
 
-            field.Piece.FieldAttacked(field.Row, field.Column, ref _fields);
-
             return true;
         }
 
@@ -79,8 +77,6 @@
 
             field.Piece.ValidFilds(line, column, ref _fields);
 
-            field.Piece.FieldAttacked(field.Row, field.Column, ref _fields);
-
             return true;
         }
 
@@ -100,9 +96,7 @@
             }
 
             var from = _fields[toPosition.Row, toPosition.Column];
-            if (from.ValidPosition) {
-
-                fromFiel.Piece.FieldAttacked(fromFiel.Row, fromFiel.Column, ref _fields);
+            if (from.ValidPosition) {                
                 if (!_fields[toPosition.Row, toPosition.Column].ValidPosition) {
                     ransom = "Invalid Move";
                     return false;
@@ -142,8 +136,7 @@
             }
 
             var from = _fields[column, line];
-            if (old.Piece.ValidFilds(old.Row, old.Column, ref _fields)) {
-                old.Piece.FieldAttacked(old.Row, old.Column, ref _fields);
+            if (old.Piece.ValidFilds(old.Row, old.Column, ref _fields)) {                
                 if (!_fields[column, line].ValidPosition) {
                     ransom = "Invalid Move";
                     return false;
@@ -196,9 +189,7 @@
             CapturedPiece(fromPosition);
 
             fromPosition.SetPiece(oldField.Piece);
-            oldField.NullPiece();
-
-            fromPosition.Piece.FieldAttacked(fromPosition.Row, fromPosition.Column, ref _fields);
+            oldField.NullPiece();            
             return true;
         }
 
@@ -304,9 +295,8 @@
         }
 
         public void ClearMarkedFields(Field field) {
-            if (field.FieldAttacked || field.ValidPosition) {
+            if (field.ValidPosition) {
                 Console.BackgroundColor = ConsoleColor.Black;
-                field.DisableFieldAttacked();
                 field.DisableValidPosition();
             }
         }

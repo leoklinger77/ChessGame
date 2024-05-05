@@ -4,11 +4,7 @@
     public class Tower : Piece {
         public Tower(ConsoleColor color) : base(color) {
         }
-
-        internal override bool FieldAttacked(int row, int column, ref Field[,] fields) {
-            return true;
-        }
-
+                
         internal override bool ValidFilds(int row, int column, ref Field[,] fields) {
             return true;
         }

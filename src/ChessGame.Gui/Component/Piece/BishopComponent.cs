@@ -1,14 +1,11 @@
 ﻿namespace ChessGame.Gui.Component.Piece {
     using System.Reactive.Subjects;
 
-    public partial class BishopComponent : UserControl {
-        public Color Color { get; private set; }
-        public Subject<EventArgs> Subject { get; set; }
+    public partial class BishopComponent : FieldComponent {
         public BishopComponent() {
             InitializeComponent();
-            Subject = new Subject<EventArgs>();
         }
-        public void SetInitializePiece(Color color) {
+        public override void SetInitializePiece(Color color) {
             Color = color;
             if (Color == Color.White) {
                 Image myimage = new Bitmap(@"C:\develop\custom\ChessGame\Piece\BishopWhite.png");

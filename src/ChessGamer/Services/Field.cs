@@ -4,8 +4,7 @@
     public class Field {
         public PiecePosition Position { get; set; }
         public Piece Piece { get; private set; }
-        public bool ValidPosition { get; private set; }
-        public bool FieldAttacked { get; private set; }
+        public bool ValidPosition { get; private set; }        
 
         public int Row => Position.Row;
         public int Column => Position.Column;
@@ -14,16 +13,9 @@
             Position = position;
             Piece = piece;
         }
-        public void EnableFieldAttacked() {
-            FieldAttacked = true;
-            EnableValidPosition();
-        }
+        
         public void EnableValidPosition() {
             ValidPosition = true;
-        }
-
-        public void DisableFieldAttacked() {
-            FieldAttacked = false;
         }
 
         public void DisableValidPosition() {

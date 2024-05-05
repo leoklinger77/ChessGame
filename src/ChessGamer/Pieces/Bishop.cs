@@ -4,11 +4,7 @@
     public class Bishop : Piece {
         public Bishop(ConsoleColor color) : base(color) {
         }
-
-        internal override bool FieldAttacked(int line, int column, ref Field[,] fields) {
-            return true;
-        }
-
+        
         internal override bool ValidFilds(int line, int column, ref Field[,] fields) {
             return true;
         }

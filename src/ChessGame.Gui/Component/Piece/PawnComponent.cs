@@ -1,16 +1,14 @@
 ﻿namespace ChessGame.Gui.Component.Piece {
-    using ChessGamer.Services;
     using System;
+    using System.Drawing;
     using System.Reactive.Subjects;
-    public partial class PawnComponent : UserControl {
-        public Color Color { get; set; }
-        public Subject<EventArgs> Subject { get; set; }
+    public partial class PawnComponent : FieldComponent {
         public PawnComponent() {
             InitializeComponent();
             Subject = new Subject<EventArgs>();
         }
 
-        public void SetInitializePiece(Color color) {
+        public override void SetInitializePiece(Color color) {
             Color = color;
             if (Color == Color.White) {
                 Image myimage = new Bitmap(@"C:\develop\custom\ChessGame\Piece\PawnWhite.png");
