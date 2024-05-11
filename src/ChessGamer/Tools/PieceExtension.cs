@@ -7,6 +7,14 @@
             if (piecePosition is null) {
                 throw new ArgumentNullException(nameof(piecePosition));
             }
+
+            if (piecePosition.Row >= fields.GetLength(0) ||
+                piecePosition.Column >= fields.GetLength(1) ||
+                piecePosition.Row < 0 || 
+                piecePosition.Column < 0) {
+                return null;
+            }
+
             return fields[piecePosition.Row, piecePosition.Column];
         }
     }

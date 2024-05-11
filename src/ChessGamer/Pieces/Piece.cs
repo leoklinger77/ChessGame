@@ -15,6 +15,13 @@
 
         protected void IncrementMove() {
             QtyMove += 1;
+        }        
+
+        protected bool CanMove(Field field) {
+            if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
+                return false;
+            }
+            return true;
         }
 
         protected bool IsValid() {

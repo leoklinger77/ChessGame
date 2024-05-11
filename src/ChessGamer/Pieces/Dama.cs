@@ -12,7 +12,7 @@
             var column = position.Column - 1;
             while (_current.IsValidPosition(row, column) != IsValid()) {
                 var field = fields[row, column];
-                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
+                if (!CanMove(field)) {
                     break;
                 }
                 field.EnableValidPosition();
@@ -25,7 +25,7 @@
             column = position.Column + 1;
             while (_current.IsValidPosition(row, column) != IsValid()) {
                 var field = fields[row, column];
-                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
+                if (!CanMove(field)) {
                     break;
                 }
                 field.EnableValidPosition();
@@ -38,7 +38,7 @@
             column = position.Column + 1;
             while (_current.IsValidPosition(row, column) != IsValid()) {
                 var field = fields[row, column];
-                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
+                if (!CanMove(field)) {
                     break;
                 }
                 field.EnableValidPosition();
@@ -51,7 +51,7 @@
             column = position.Column - 1;
             while (_current.IsValidPosition(row, column) != IsValid()) {
                 var field = fields[row, column];
-                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
+                if (!CanMove(field)) {
                     break;
                 }
                 field.EnableValidPosition();
@@ -63,7 +63,7 @@
             var value = position.Row - 1;
             while (_current.IsValidPosition(value, position.Column) != IsValid()) {
                 var field = fields[value, position.Column];
-                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
+                if (!CanMove(field)) {
                     break;
                 }
                 field.EnableValidPosition();
@@ -75,7 +75,7 @@
             value = position.Row + 1;
             while (_current.IsValidPosition(value, position.Column) != IsValid()) {
                 var field = fields[value, position.Column];
-                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
+                if (!CanMove(field)) {
                     break;
                 }
                 field.EnableValidPosition();
@@ -87,7 +87,7 @@
             value = position.Column + 1;
             while (_current.IsValidPosition(position.Row, value) != IsValid()) {
                 var field = fields[position.Row, value];
-                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
+                if (!CanMove(field)) {
                     break;
                 }
                 field.EnableValidPosition();
@@ -99,7 +99,7 @@
             value = position.Column - 1;
             while (_current.IsValidPosition(position.Row, value) != IsValid()) {
                 var field = fields[position.Row, value];
-                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
+                if (!CanMove(field)) {
                     break;
                 }
                 field.EnableValidPosition();
