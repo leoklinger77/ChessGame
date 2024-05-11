@@ -10,6 +10,7 @@
     public partial class BoardComponent : UserControl {
         private ISubject<PiecePosition> EventPiecePosition;
         private IObservable<PiecePosition> ObservableEventClient;
+        private IObservable<SelectPosition> ObservableRock;
         private SynchronizationContext _synchronizationContext;
         private Board Board { get; set; }
         private readonly CapturedPartsComponent _capturedWhiteComponent;
@@ -30,9 +31,15 @@
             this.BackColor = Color.Beige;
             PlacingThePieces();
             Board = board;
+
+            ObservableRock = board.SubjectRock;
+            ObservableRock.ObserveOn(_synchronizationContext).Subscribe(Rock);
+
             _capturedWhiteComponent = capturedWhiteComponent;
             _capturedBlackComponent = capturedBlackComponent;
         }
+
+
 
         private void panelChess_Click(object sender, EventArgs e) {
             TableLayoutPanel tableLayoutPanel = sender as TableLayoutPanel;
@@ -74,7 +81,7 @@
             try {
                 _validPosition.Clear();
                 panelChess.Invalidate();
-                var controlKey = GetKey(position.Origin.Row, position.Origin.Column);
+                var controlKey = position.GetOriginKey();
                 if (_pieceControl.TryGetValue(controlKey, out var control)) {
                     var controlKeyDestionation = GetKey(position.Destination.Row, position.Destination.Column);
 
@@ -105,6 +112,19 @@
             } catch (Exception ex) {
                 return false;
             }
+        }
+
+        private void Rock(SelectPosition position) {
+            var controlKey = position.GetOriginKey();
+            if (_pieceControl.TryGetValue(controlKey, out var control)) {
+                panelChess.Controls.Remove(control);
+                _pieceControl.Remove(controlKey);
+
+                panelChess.SetCellPosition(control, new TableLayoutPanelCellPosition(position.Destination.Column, position.Destination.Row));
+                panelChess.Controls.Add(control);
+            }
+            //_validPosition.Add(position.GetDestinationKey(), position);
+            //panelChess.Invalidate();
         }
 
         private void chessBoard_CellPaint(object sender, TableLayoutCellPaintEventArgs e) {

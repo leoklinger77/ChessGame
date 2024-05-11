@@ -9,10 +9,10 @@
         }
 
         public string GetOriginKey() {
-            return $"Column: {Origin.Column} | Row: {Origin.Row}";
+            return $"Row: {Origin.Row} | Column: {Origin.Column}";
         }
         public string GetDestinationKey() {
-            return $"Column: {Destination.Column} | Row: {Destination.Row}";
+            return $"Row: {Destination.Row} | Column: {Destination.Column}";
         }
     }
 }

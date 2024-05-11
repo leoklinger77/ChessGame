@@ -2,15 +2,14 @@
     using ChessGamer.Pieces;
     using ChessGamer.Tools;
     using System;
-    using System.Data.Common;
-    using System.Security.Cryptography;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
 
     public class Board {
-
         private IDictionary<ConsoleColor, List<Piece>> _captureFields = new Dictionary<ConsoleColor, List<Piece>>();
-
         private Field[,] _fields = new Field[8, 8];
 
+        public ISubject<SelectPosition> SubjectRock = new Subject<SelectPosition>();
         public ConsoleColor ColorBlack { get; private set; } = ConsoleColor.Yellow;
         public ConsoleColor ColorWhite { get; private set; } = ConsoleColor.White;
         public bool IsWhite { get; private set; } = true;
@@ -19,7 +18,9 @@
         public Board() {
             CreatedBoard();
         }
+
         public Field[,] Fields() => _fields;
+
         public IDictionary<ConsoleColor, List<Piece>> CaptureFields() => _captureFields;
 
         public bool TryGetField(PiecePosition select, out Field field, out string ransom) {
@@ -37,7 +38,7 @@
 
             ClearFiltAttacked(ref _fields);
 
-            field.Piece.ValidFilds(select.Row, select.Column, ref _fields);
+            field.Piece.ValidFilds(select, ref _fields);
 
             return true;
         }
@@ -75,7 +76,7 @@
                 return false;
             }
 
-            field.Piece.ValidFilds(line, column, ref _fields);
+            field.Piece.ValidFilds(field.Position, ref _fields);
 
             return true;
         }
@@ -96,12 +97,12 @@
             }
 
             var from = _fields[toPosition.Row, toPosition.Column];
-            if (from.ValidPosition) {                
+            if (from.ValidPosition) {
                 if (!_fields[toPosition.Row, toPosition.Column].ValidPosition) {
                     ransom = "Invalid Move";
                     return false;
                 }
-            }            
+            }
 
             if (!MoveToFrom(fromFiel, ref from, ref ransom)) {
                 return false;
@@ -136,7 +137,7 @@
             }
 
             var from = _fields[column, line];
-            if (old.Piece.ValidFilds(old.Row, old.Column, ref _fields)) {                
+            if (old.Piece.ValidFilds(old.Position, ref _fields)) {
                 if (!_fields[column, line].ValidPosition) {
                     ransom = "Invalid Move";
                     return false;
@@ -156,19 +157,26 @@
             return true;
         }
 
+
         public IDictionary<string, SelectPosition> GetValidFilds(Field origin) {
             var result = new Dictionary<string, SelectPosition>();
             for (int row = 0; row < 8; row++) {
                 for (int collumn = 0; collumn < 8; collumn++) {
                     var fieldMark = _fields[row, collumn];
                     if (fieldMark.ValidPosition) {
-
-                        var bla = new SelectPosition(origin, fieldMark);
-                        result.Add(bla.GetDestinationKey(), bla);
+                        var select = new SelectPosition(origin, fieldMark);
+                        result.Add(select.GetDestinationKey(), select);
                     }
                 }
             }
             return result;
+        }
+
+        public void ClearMarkedFields(Field field) {
+            if (field.ValidPosition) {
+                Console.BackgroundColor = ConsoleColor.Black;
+                field.DisableValidPosition();
+            }
         }
 
         private bool MoveToFrom(Field oldField, ref Field fromPosition, ref string ransom) {
@@ -179,7 +187,7 @@
                 throw new Exception("Old field is required");
             }
 
-            if (!oldField.Piece.ValidFilds(oldField.Row, oldField.Column, ref _fields)) {
+            if (!oldField.Piece.ValidFilds(oldField.Position, ref _fields)) {
                 ransom = "Invalid Move";
                 return false;
             }
@@ -188,17 +196,41 @@
 
             CapturedPiece(fromPosition);
 
+            if (oldField.Piece is King king && Math.Abs(oldField.Column - fromPosition.Column) > 1) {
+                Rock(fromPosition);
+            }
+
             fromPosition.SetPiece(oldField.Piece);
-            oldField.NullPiece();            
+            oldField.NullPiece();
+
+
+
             return true;
+        }
+
+        private void Rock(Field fromPosition) {
+            var columnTower = fromPosition.Column == 6 ? 7 : 0;
+            Field tower = _fields[fromPosition.Row, columnTower];
+            Field fromTower = null;            
+            if (fromPosition.Column == 2) {
+                fromTower = _fields[fromPosition.Row, 3];
+            } else {
+                fromTower = _fields[fromPosition.Row, 5];
+            }
+
+            if (fromTower.Piece == null) {
+                fromTower.SetPiece(tower.Piece);
+                tower.NullPiece();
+                SubjectRock.OnNext(new SelectPosition(tower, fromTower));
+            }
         }
 
         private void CapturedPiece(Field field) {
             if (field.Piece != null) {
-                if (_captureFields.TryGetValue(field.Piece.Color, out List<Piece> capture)) {
+                if (_captureFields.TryGetValue(field.Piece.Color.Value, out List<Piece> capture)) {
                     capture.Add(field.Piece);
                 } else {
-                    _captureFields.Add(field.Piece.Color, new List<Piece>() { field.Piece });
+                    _captureFields.Add(field.Piece.Color.Value, new List<Piece>() { field.Piece });
                 }
             }
         }
@@ -285,19 +317,13 @@
                 }
             }
         }
+
         private void ClearMarkedFields() {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     var field = _fields[i, j];
                     ClearMarkedFields(field);
                 }
-            }
-        }
-
-        public void ClearMarkedFields(Field field) {
-            if (field.ValidPosition) {
-                Console.BackgroundColor = ConsoleColor.Black;
-                field.DisableValidPosition();
             }
         }
     }

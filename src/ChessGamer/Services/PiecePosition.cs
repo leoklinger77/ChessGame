@@ -3,11 +3,15 @@
         public int Column { get; private set; }
         public int Row { get; private set; }
         public PiecePosition(int row, int column) {
-            Column = column;
-            Row = row;
+            SetPosition(row, column);
         }
         public override string ToString() {
-            return $"Column: {Column} | Row: {Row}";
+            return $"Row: {Row} | Column: {Column}";
+        }
+
+        public void SetPosition(int row, int column) {
+            Column = column;
+            Row = row;
         }
 
         public static PiecePosition Position(int row, int column) {

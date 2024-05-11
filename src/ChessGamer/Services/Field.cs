@@ -4,7 +4,7 @@
     public class Field {
         public PiecePosition Position { get; set; }
         public Piece Piece { get; private set; }
-        public bool ValidPosition { get; private set; }        
+        public bool ValidPosition { get; private set; }
 
         public int Row => Position.Row;
         public int Column => Position.Column;
@@ -13,7 +13,7 @@
             Position = position;
             Piece = piece;
         }
-        
+
         public void EnableValidPosition() {
             ValidPosition = true;
         }
@@ -33,12 +33,11 @@
             Piece = null;
         }
 
-        internal bool IsValidPosition(Field[,] fields, int line, int column) {
-            var field = fields[line, column];
-            if (field.ValidPosition) {
-                return true;
+        internal bool IsValidPosition(int row, int column) {
+            if (row < 0 || row > 7 || column < 0 || column > 7) {
+                return false;
             }
-            return false;
+            return true;
         }
 
         public override string ToString() {
@@ -49,7 +48,7 @@
                 srt = Piece.ToString();
             }
             //srt += $" Attacked: {FieldAttacked} |  Validation: {ValidPosition} | PieceColor: {Piece?.Color}";
-            
+
             return srt;
         }
     }

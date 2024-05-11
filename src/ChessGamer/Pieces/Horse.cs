@@ -3,15 +3,16 @@
 
     public class Horse : Piece {
         public Horse(ConsoleColor color) : base(color) {
-        }        
+        }
+       
 
-        internal override bool ValidFilds(int row, int column, ref Field[,] fields) {
-            var current = fields[row, column];
+        internal override bool ValidFilds(PiecePosition position, ref Field[,] fields) {
+            var current = fields[position.Row, position.Column];
             for (int rrow = 0; rrow < 8; rrow++) {
                 for (int ccolumn = 0; ccolumn < 8; ccolumn++) {
 
-                    if (rrow == row - 2 || rrow == row + 2) {
-                        if (ccolumn == column + 1 || ccolumn == column - 1) {
+                    if (rrow == position.Row - 2 || rrow == position.Row + 2) {
+                        if (ccolumn == position.Column + 1 || ccolumn == position.Column - 1) {
                             var fiel = fields[rrow, ccolumn];
 
                             if (fiel.Piece == null || (fiel.Piece != null && fiel.Piece.Color != current.Piece.Color)) {
@@ -20,8 +21,8 @@
                         }
                     }
 
-                    if (rrow == row - 1 || rrow == row + 1) {
-                        if (ccolumn == column + 2 || ccolumn == column - 2) {
+                    if (rrow == position.Row - 1 || rrow == position.Row + 1) {
+                        if (ccolumn == position.Column + 2 || ccolumn == position.Column - 2) {
                             var fiel = fields[rrow, ccolumn];
                             if (fiel.Piece == null || (fiel.Piece != null && fiel.Piece.Color != current.Piece.Color)) {
                                 fiel.EnableValidPosition();

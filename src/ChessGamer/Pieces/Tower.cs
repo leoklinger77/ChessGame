@@ -5,31 +5,54 @@
         public Tower(ConsoleColor color) : base(color) {
         }
 
-        internal override bool ValidFilds(int row, int column, ref Field[,] fields) {
-            var current = fields[row, column];
-
-            for (int i = row - 1; i >= 0; i--) {
-                if (VerifildPosition(i, column, current, ref fields)) {
+        internal override bool ValidFilds(PiecePosition position, ref Field[,] fields) {
+            _current = fields[position.Row, position.Column];
+            //Up
+            var value = position.Row - 1;
+            while (_current.IsValidPosition(value, position.Column) != IsValid()) {
+                var field = fields[value, position.Column];
+                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
                     break;
                 }
+                field.EnableValidPosition();
+                value--;
+
             }
 
-            for (int i = row + 1; i < 8; i++) {
-                if (VerifildPosition(i, column, current, ref fields)) {
+            // Bottom
+            value = position.Row + 1;
+            while (_current.IsValidPosition(value, position.Column) != IsValid()) {
+                var field = fields[value, position.Column];
+                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
                     break;
                 }
+                field.EnableValidPosition();
+                value++;
+
             }
 
-            for (int i = column - 1; i >= 0; i--) {
-                if (VerifildPosition(row, i, current, ref fields)) {
+            //// R
+            value = position.Column + 1;
+            while (_current.IsValidPosition(position.Row, value) != IsValid()) {
+                var field = fields[position.Row, value];
+                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
                     break;
                 }
+                field.EnableValidPosition();
+                value++;
+
             }
 
-            for (int i = column + 1; i < 8; i++) {
-                if (VerifildPosition(row, i, current, ref fields)) {
+            //// L
+            value = position.Column - 1;
+            while (_current.IsValidPosition(position.Row, value) != IsValid()) {
+                var field = fields[position.Row, value];
+                if (field.Piece != null && field.Piece.Color != null && field.Piece.Color.Value == Color) {
                     break;
                 }
+                field.EnableValidPosition();
+                value--;
+
             }
             return true;
         }
