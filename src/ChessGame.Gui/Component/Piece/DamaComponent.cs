@@ -1,5 +1,6 @@
 ﻿namespace ChessGame.Gui.Component.Piece {
     using System.Reactive.Subjects;
+    using System.Reflection;
 
     public partial class DamaComponent : FieldComponent {        
         public DamaComponent() {
@@ -9,10 +10,10 @@
         public override void SetInitializePiece(Color color) {
             Color = color;
             if (Color == Color.White) {
-                Image myimage = new Bitmap(@"C:\develop\custom\ChessGame\Piece\DamaWhite.png");
+                Image myimage = new Bitmap(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Piece", "DamaWhite.png"));
                 this.BackgroundImage = myimage;
             } else {
-                Image myimage = new Bitmap(@"C:\develop\custom\ChessGame\Piece\DamaBlack.png");
+                Image myimage = new Bitmap(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Piece", "DamaBlack.png"));
                 this.BackgroundImage = myimage;
             }
         }

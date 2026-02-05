@@ -3,8 +3,7 @@
 
     public class Horse : Piece {
         public Horse(ConsoleColor color) : base(color) {
-        }
-       
+        }       
 
         internal override bool ValidFilds(PiecePosition position, ref Field[,] fields) {
             var current = fields[position.Row, position.Column];

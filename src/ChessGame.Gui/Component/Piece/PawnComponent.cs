@@ -2,6 +2,8 @@
     using System;
     using System.Drawing;
     using System.Reactive.Subjects;
+    using System.Reflection;
+
     public partial class PawnComponent : FieldComponent {
         public PawnComponent() {
             InitializeComponent();
@@ -11,10 +13,10 @@
         public override void SetInitializePiece(Color color) {
             Color = color;
             if (Color == Color.White) {
-                Image myimage = new Bitmap(@"C:\develop\custom\ChessGame\Piece\PawnWhite.png");
+                Image myimage = new Bitmap(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Piece", "PawnWhite.png"));
                 this.BackgroundImage = myimage;
             } else {
-                Image myimage = new Bitmap(@"C:\develop\custom\ChessGame\Piece\PawnBlack.png");
+                Image myimage = new Bitmap(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Piece", "PawnBlack.png"));
                 this.BackgroundImage = myimage;
             }
         }

@@ -1,5 +1,6 @@
 ﻿namespace ChessGamer.Pieces {
     using ChessGamer.Services;
+
     public class Dama : Piece {
         public Dama(ConsoleColor color) : base(color) {
         }

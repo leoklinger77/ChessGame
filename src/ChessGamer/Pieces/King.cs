@@ -1,9 +1,11 @@
 ﻿namespace ChessGamer.Pieces {
     using ChessGamer.Services;
     using ChessGamer.Tools;
+    using System.Drawing;
 
     public class King : Piece {
         private bool _check = false;
+
         public King(ConsoleColor color) : base(color) {
         }
 
@@ -37,7 +39,7 @@
             if (QtyMove == 0 && !_check) {
                 // #jogadaespecial roque pequeno
                 var t1 = PiecePosition.Position(position.Row, position.Column + 3);
-                if (testeTorreParaRoque(t1, ref fields)) {
+                if (TowerValidForRock(t1, ref fields)) {
                     PiecePosition p1 = PiecePosition.Position(position.Row, position.Column + 1);
                     PiecePosition p2 = PiecePosition.Position(position.Row, position.Column + 2);
                     if (fields.GetField(p1).Piece == null && fields.GetField(p2).Piece == null) {
@@ -47,7 +49,7 @@
                 }
                 // #jogadaespecial roque grande
                 var t2 = PiecePosition.Position(position.Row, position.Column - 4);
-                if (testeTorreParaRoque(t2, ref fields)) {
+                if (TowerValidForRock(t2, ref fields)) {
                     PiecePosition p1 = PiecePosition.Position(position.Row, position.Column - 1);
                     PiecePosition p2 = PiecePosition.Position(position.Row, position.Column - 2);
                     PiecePosition p3 = PiecePosition.Position(position.Row, position.Column - 3);
@@ -60,9 +62,8 @@
             return true;
         }
 
-        private bool testeTorreParaRoque(PiecePosition pos, ref Field[,] fields) {
+        private bool TowerValidForRock(PiecePosition pos, ref Field[,] fields) {
             var tower = fields.GetField(pos);
-
 
             return tower.Piece != null && tower.Piece is Tower && tower.Piece.Color == Color && tower.Piece.QtyMove == 0;
         }

@@ -11,6 +11,7 @@
         private ISubject<PiecePosition> EventPiecePosition;
         private IObservable<PiecePosition> ObservableEventClient;
         private IObservable<SelectPosition> ObservableRock;
+
         private SynchronizationContext _synchronizationContext;
         private Board Board { get; set; }
         private readonly CapturedPartsComponent _capturedWhiteComponent;
@@ -18,7 +19,10 @@
 
         private IDictionary<string, SelectPosition> _validPosition;
         private IDictionary<string, UserControl> _pieceControl;
-        public BoardComponent(Board board, CapturedPartsComponent capturedWhiteComponent, CapturedPartsComponent capturedBlackComponent) {
+
+        private bool InitializeGame = false;
+
+        public BoardComponent(Board board, CapturedPartsComponent capturedWhiteComponent, CapturedPartsComponent capturedBlackComponent, ISubject<bool> subjectInitGamer) {
             InitializeComponent();
             _synchronizationContext = SynchronizationContext.Current;
             EventPiecePosition = new Subject<PiecePosition>();
@@ -26,6 +30,7 @@
             ObservableEventClient.ObserveOn(_synchronizationContext).Subscribe(PossibleMoves);
 
             _validPosition = new Dictionary<string, SelectPosition>();
+            _pieceControl = new Dictionary<string, UserControl>();
             _pieceControl = new Dictionary<string, UserControl>();
 
             this.BackColor = Color.Beige;
@@ -37,6 +42,10 @@
 
             _capturedWhiteComponent = capturedWhiteComponent;
             _capturedBlackComponent = capturedBlackComponent;
+
+            subjectInitGamer.ObserveOn(_synchronizationContext).Subscribe((x) => {
+                InitializeGame = x;
+            });
         }
 
 
@@ -52,7 +61,9 @@
             int column = relativePoint.X / cellWidth;
             int row = relativePoint.Y / cellHeight;
 
-            EventPiecePosition.OnNext(new PiecePosition(row, column));
+            if (InitializeGame) {
+                EventPiecePosition.OnNext(new PiecePosition(row, column));
+            }
         }
 
         private void PossibleMoves(PiecePosition clickPosition) {

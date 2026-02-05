@@ -1,5 +1,6 @@
 ﻿namespace ChessGame.Gui.Component.Piece {
     using System.Reactive.Subjects;
+    using System.Reflection;
 
     public partial class BishopComponent : FieldComponent {
         public BishopComponent() {
@@ -7,11 +8,12 @@
         }
         public override void SetInitializePiece(Color color) {
             Color = color;
-            if (Color == Color.White) {
-                Image myimage = new Bitmap(@"C:\develop\custom\ChessGame\Piece\BishopWhite.png");
+            if (Color == Color.White) {                
+                Image myimage = new Bitmap(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Piece", "BishopWhite.png"));
                 this.BackgroundImage = myimage;
             } else {
-                Image myimage = new Bitmap(@"C:\develop\custom\ChessGame\Piece\BishopBlack.png");
+                
+                Image myimage = new Bitmap(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Piece", "BishopBlack.png"));
                 this.BackgroundImage = myimage;
             }
         }

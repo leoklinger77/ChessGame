@@ -10,6 +10,7 @@
         private Field[,] _fields = new Field[8, 8];
 
         public ISubject<SelectPosition> SubjectRock = new Subject<SelectPosition>();
+        public ISubject<ConsoleColor> SubjectPlay = new Subject<ConsoleColor>();
         public ConsoleColor ColorBlack { get; private set; } = ConsoleColor.Yellow;
         public ConsoleColor ColorWhite { get; private set; } = ConsoleColor.White;
         public bool IsWhite { get; private set; } = true;
@@ -110,8 +111,10 @@
 
             if (IsWhite) {
                 IsWhite = false;
+                SubjectPlay.OnNext(ColorBlack);
             } else {
                 IsWhite = true;
+                SubjectPlay.OnNext(ColorWhite);
             }
             Count++;
             return true;
@@ -156,7 +159,6 @@
             Count++;
             return true;
         }
-
 
         public IDictionary<string, SelectPosition> GetValidFilds(Field origin) {
             var result = new Dictionary<string, SelectPosition>();
@@ -211,7 +213,7 @@
         private void Rock(Field fromPosition) {
             var columnTower = fromPosition.Column == 6 ? 7 : 0;
             Field tower = _fields[fromPosition.Row, columnTower];
-            Field fromTower = null;            
+            Field fromTower = null;
             if (fromPosition.Column == 2) {
                 fromTower = _fields[fromPosition.Row, 3];
             } else {

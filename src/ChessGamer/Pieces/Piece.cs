@@ -1,5 +1,6 @@
 ﻿namespace ChessGamer.Pieces {
     using ChessGamer.Services;
+    using System.Drawing;
 
     public abstract class Piece {
         protected Field _current;
