@@ -47,6 +47,18 @@
                 Console.WriteLine("Black's move");
             }
 
+            // Show check/checkmate status
+            if (board.IsCheckmate) {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("*** CHECKMATE! Game Over! ***");
+                Console.ForegroundColor = ConsoleColor.White;
+            } else if (board.IsInCheck) {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("*** CHECK! ***");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            Console.WriteLine("Commands: 'undo' to undo, 'redo' to redo, 'history' to show moves");
             CapturePiece();
         }
 
@@ -54,6 +66,37 @@
             Console.WriteLine();
             Console.Write("To: ");
             var to = Console.ReadLine();
+            
+            // Check for special commands
+            if (to.ToLower() == "undo") {
+                if (board.UndoMove()) {
+                    Console.WriteLine("Move undone!");
+                } else {
+                    Console.WriteLine("Nothing to undo!");
+                }
+                Console.ReadKey();
+                field = null;
+                return false;
+            }
+            
+            if (to.ToLower() == "redo") {
+                if (board.RedoMove()) {
+                    Console.WriteLine("Move redone!");
+                } else {
+                    Console.WriteLine("Nothing to redo!");
+                }
+                Console.ReadKey();
+                field = null;
+                return false;
+            }
+            
+            if (to.ToLower() == "history") {
+                ShowHistory();
+                Console.ReadKey();
+                field = null;
+                return false;
+            }
+
             if (!board.TryGetField(to.ToUpper(), out field, out var ransom)) {
                 Console.Write(ransom);
                 Console.ReadKey();
@@ -93,6 +136,20 @@
             }
         }
 
+        private void ShowHistory() {
+            Console.Clear();
+            Console.WriteLine("=== Move History ===");
+            var moves = board.GetMoveHistory().GetAllMoves();
+            if (moves.Count == 0) {
+                Console.WriteLine("No moves yet!");
+            } else {
+                foreach (var move in moves) {
+                    Console.WriteLine(move.ToString());
+                }
+            }
+            Console.WriteLine("\nPress any key to continue...");
+        }
+
         private void ShowBoard() {
             Header();
             Console.WriteLine();
@@ -123,7 +180,7 @@
             if (field.Piece == null) {
                 Console.Write(field.ToString());
             } else if (field.Piece != null && field.Piece.Color == board.ColorBlack) {
-                Console.ForegroundColor = field.Piece.Color;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(field.ToString());
                 Console.ForegroundColor = ConsoleColor.White;
             } else if (field.Piece != null && field.Piece.Color == board.ColorWhite) {
